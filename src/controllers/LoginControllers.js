@@ -24,7 +24,7 @@ function auth(req, res){
                             req.session.loggedin = true;
                             req.session.name = element.name;
 
-                            res.redirect('/');
+                            res.redirect('/hola');
                         }
                     });
                 });
