@@ -1,11 +1,21 @@
 const bcrypt = require('bcrypt');
 
 function login(req, res){
-    res.render('login/index');
+    if(req.session.loggedin != true){
+        res.render('login/index');
+    }else{
+        res.redirect('/');    
+    }
+    
 }
 
 function register(req, res){
-    res.render('login/register');
+    if(req.session.loggedin != true){
+        res.render('login/register');
+    }else{
+        res.redirect('/');    
+    }
+    
 }
 
 function auth(req, res){
@@ -48,6 +58,10 @@ function storeUser(req, res){
                     data.password = hash;
                     req.getConnection((err, conn) => {
                         conn.query('INSERT INTO users SET ?', [data], (err, rows) => {
+                            
+                            req.session.loggedin = true;
+                            req.session.name = data.name;
+                            
                             res.redirect('/');
                         });
                     });
@@ -58,9 +72,20 @@ function storeUser(req, res){
     });
 }
 
+function logout(req , res){
+    if(req.session.loggedin == true){
+
+        req.session.destroy();
+
+    }
+    res.redirect('/login');
+    
+}
+
 module.exports={
     login,
     register,
     storeUser,
     auth,
+    logout,
 }
