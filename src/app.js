@@ -4,8 +4,10 @@ const myconnection = require('express-myconnection');
 const mysql = require('mysql');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const winston = require('winston')
 
 const loginRoutes = require('./routes/login');
+const logger = require('./utils/logger')
 
 const app = express();
 app.set('port', 4000);
@@ -49,5 +51,7 @@ app.get('/', (req,res) =>{
     }
     
 });
+
+
 
 //inyeccion sql 

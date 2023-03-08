@@ -15,9 +15,14 @@
         class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 
         bg-gray-200 focus:bg-white" required>
 
-        <input type="text" name="rol" placeholder="Rol" 
-        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 
-        bg-gray-200 focus:bg-white" required>
+        <label class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 
+        bg-gray-200 focus:bg-white" style="padding-left: 20px;">Rol del usuario: </label>
+        <select style="padding-left: 10px;" name="rol" id="rol" type="text" class="border border-gray-200 text-lg
+        placeholder-gray-500 p-2  bg-gray-200 ">
+            <option value="gerente">Gerente</option>
+            <option value="cliente">Cliente</option>
+            <option value="cliente">Cliente</option>
+        </select>
         
         <button type="submit" class="rounded-md bg-green-500 w-full text-lg text-white
         font-semibold p-2 my-3 hover:bg-green-600 focus:bg-green-700">Enviar</button>

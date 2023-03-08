@@ -1,12 +1,12 @@
 const bcrypt = require('bcrypt');
+const logger = require('../utils/logger')
 
 function login(req, res){
     if(req.session.loggedin != true){
         res.render('login/index');
     }else{
-        res.redirect('/');    
+        res.redirect('/');   
     }
-    
 }
 
 function register(req, res){
@@ -15,13 +15,14 @@ function register(req, res){
     }else{
         res.redirect('/');    
     }
-    
+
 }
 
 function auth(req, res){
     const data = req.body;
 
     req.getConnection((err, conn) => {
+        
         conn.query('SELECT * FROM users WHERE email = ?', [data.email], (err, userdata) => {
             
             if(userdata.length > 0){
@@ -29,20 +30,24 @@ function auth(req, res){
                     bcrypt.compare(data.password, element.password, (err, isMatch) => {
                         if(!isMatch){
                             res.render('login/index', {error: 'Error: Contraseña incorrecta!'});
+                            logger.info(`${element.name}: contraseña incorrecta`);
                         }else{
                             
                             req.session.loggedin = true;
                             req.session.name = element.name;
 
                             res.redirect('/');
+                            logger.info(`Usuario inicio session: ${element.name}`);
                         }
                     });
+                    
                 });
             }else{
                 res.render('login/index', {error: 'Error: El usuario no existe!'});
             }
         });
     });
+    
 }
 
 function storeUser(req, res){
@@ -63,6 +68,7 @@ function storeUser(req, res){
                             req.session.name = data.name;
                             
                             res.redirect('/');
+                            logger.info(`Nuevo usuario creado: ${data.name}`);
                         });
                     });
                     console.log(data);
@@ -79,7 +85,7 @@ function logout(req , res){
 
     }
     res.redirect('/login');
-    
+    logger.info('Finalizo la Sesion');
 }
 
 module.exports={
