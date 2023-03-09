@@ -1,0 +1,15 @@
+
+<h1>Mi tabla de datos</h1>
+    <table>
+    <thead>
+        <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        </tr>
+            </thead>
+            <tbody>
+                ${results.map(result => `<tr><td>${result.id}</td><td>${result.nombre}</td><td>${result.email}</td></tr>`).join('')}
+            </tbody>
+    </table>
+        

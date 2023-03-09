@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const { data } = require('../utils/logger');
 const logger = require('../utils/logger')
 
 function login(req, res){
@@ -18,34 +19,68 @@ function register(req, res){
 
 }
 
+function register2(req, res){
+    if(req.session.loggedin != true){
+        res.render('login/register2');
+    }else{
+        res.redirect('/');    
+    }
+}
+
 function auth(req, res){
     const data = req.body;
 
     req.getConnection((err, conn) => {
-        
-        conn.query('SELECT * FROM users WHERE email = ?', [data.email], (err, userdata) => {
+        if(data.name == "Admin1"){
+            conn.query('SELECT * FROM roles WHERE name = ?', [data.name], (err, userdata) => {
             
-            if(userdata.length > 0){
-                userdata.forEach(element => {
-                    bcrypt.compare(data.password, element.password, (err, isMatch) => {
-                        if(!isMatch){
-                            res.render('login/index', {error: 'Error: Contraseña incorrecta!'});
-                            logger.info(`${element.name}: contraseña incorrecta`);
-                        }else{
-                            
-                            req.session.loggedin = true;
-                            req.session.name = element.name;
-
-                            res.redirect('/');
-                            logger.info(`Usuario inicio session: ${element.name}`);
-                        }
+                if(userdata.length > 0){
+                    userdata.forEach(element => {
+                        bcrypt.compare(data.password, element.password, (err, isMatch) => {
+                            if(!isMatch){
+                                res.render('login/index', {error: 'Error: Contraseña incorrecta!'});
+                                logger.info(`${element.name}: contraseña incorrecta`);
+                            }else{
+                                
+                                req.session.loggedin = true;
+                                req.session.name = element.name;
+    
+                                res.redirect('/');
+                                logger.info(`Usuario inicio session: ${element.name}`);
+                            }
+                        });
+                        
                     });
-                    
-                });
-            }else{
-                res.render('login/index', {error: 'Error: El usuario no existe!'});
-            }
-        });
+                }else{
+                    res.render('login/index', {error: 'Error: El usuario no existe!'});
+                }
+            });
+        } else{
+            conn.query('SELECT * FROM users WHERE email = ?', [data.name], (err, userdata) => {
+            
+                if(userdata.length > 0){
+                    userdata.forEach(element => {
+                        bcrypt.compare(data.password, element.password, (err, isMatch) => {
+                            if(!isMatch){
+                                res.render('login/index', {error: 'Error: Contraseña incorrecta!'});
+                                logger.info(`${element.name}: contraseña incorrecta`);
+                            }else{
+                                
+                                req.session.loggedin = true;
+                                req.session.name = element.name;
+    
+                                res.redirect('/');
+                                logger.info(`Usuario inicio session: ${element.name}`);
+                            }
+                        });
+                        
+                    });
+                }else{
+                    res.render('login/index', {error: 'Error: El usuario no existe!'});
+                }
+            });
+        }
+        
     });
     
 }
@@ -56,7 +91,7 @@ function storeUser(req, res){
     req.getConnection((err, conn) => {
         conn.query('SELECT * FROM users WHERE email = ?', [data.email], (err, userdata) => {
             if(userdata.length > 0){
-                res.render('login/register', {error: 'Error: El usuario ya existe!'});
+                res.render('login/register2', {error: 'Error: El usuario ya existe!'});
             }else{
                 bcrypt.hash(data.password, 12).then(hash => {
         
@@ -66,7 +101,7 @@ function storeUser(req, res){
                             
                             req.session.loggedin = true;
                             req.session.name = data.name;
-                            
+    
                             res.redirect('/');
                             logger.info(`Nuevo usuario creado: ${data.name}`);
                         });
@@ -91,6 +126,7 @@ function logout(req , res){
 module.exports={
     login,
     register,
+    register2,
     storeUser,
     auth,
     logout,

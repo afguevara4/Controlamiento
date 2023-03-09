@@ -7,7 +7,8 @@ const bodyParser = require('body-parser');
 const winston = require('winston')
 
 const loginRoutes = require('./routes/login');
-const logger = require('./utils/logger')
+const logger = require('./utils/logger');
+const { type } = require('express/lib/response');
 
 const app = express();
 app.set('port', 4000);
@@ -16,11 +17,13 @@ app.set('views', __dirname + '/views');
 app.engine('.hbs', engine({
     extname: '.hbs',
 }));
+
 app.set('view engine', 'hbs');
 
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
 app.use(bodyParser.json());
 
 app.use(myconnection(mysql,{
@@ -44,14 +47,20 @@ app.listen(app.get('port'), () =>{
 app.use('/', loginRoutes);
 
 app.get('/', (req,res) =>{
-    if(req.session.loggedin == true){
-        res.render('home', {name: req.session.name});
+    if(req.session.loggedin == true && req.session.name =="Admin1"){
+        res.render('home2', {name: req.session.name});
+    }else if(req.session.loggedin == false){
+        res.redirect('/login');   
     }else{
-        res.redirect('/login');    
+        res.render('home', {name: req.session.name});
     }
-    
 });
 
+
+  
+
+
+  
 
 
 //inyeccion sql 

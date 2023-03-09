@@ -1,1 +1,79 @@
 <h1 class="text-center my-24 text-3xl">Bienvenido de nuevo <b>{{{name}}}</b> </h1>
+
+<div>
+
+    <div class="slider-container">
+  <div class="slider">
+    <img src="https://cloudfront-us-east-1.images.arcpublishing.com/infobae/XSTNQA7FMBGMHJT5BDADJSLOQY.jpg" alt="Slide 1">
+    <img src="https://www.rentadvisor.com.co/wp-content/uploads/images-2-500x281.jpg" alt="Slide 2">
+    <img src="https://s3.amazonaws.com/s3.timetoast.com/public/uploads/photo/15509760/image/05e828d5bc3b90eabcecbd56018b3ade" alt="Slide 3">
+  </div>
+  <div class="slider-nav">
+    <button class="prev-slide">Prev</button>
+    <button class="next-slide">Next</button>
+  </div>
+</div>
+<style>
+    .slider-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.slider {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 300%;
+  height: 100%;
+  display: flex;
+}
+
+.slider img {
+  width: 33.3333%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slider-nav {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.slider-nav button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  margin: 0 10px;
+}
+
+</style>
+<script>
+    const slider = document.querySelector('.slider');
+const prevBtn = document.querySelector('.prev-slide');
+const nextBtn = document.querySelector('.next-slide');
+
+let counter = 0;
+
+nextBtn.addEventListener('click', () => {
+  counter++;
+  if (counter > 2) {
+    counter = 0;
+  }
+  slider.style.transform = `translateX(-${counter * 33.3333}%)`;
+});
+
+prevBtn.addEventListener('click', () => {
+  counter--;
+  if (counter < 0) {
+    counter = 2;
+  }
+  slider.style.transform = `translateX(-${counter * 33.3333}%)`;
+});
+
+</script>
+</div>

@@ -23,6 +23,7 @@
         
         <ul class="w-1/2 px-16 ml-auto flex justify-end pt-1">
           {{#if name}}
+
             <li class="nav-item px-4" >
               <p class="font-semibold">{{name}}</p>
             </li>
@@ -31,6 +32,12 @@
               <a href="/logout" class="nav-link font-semibold bg-red-500 text-white hover:bg-red-700 
               py-3 px-4 rounded-md">Salir</a>
             </li>
+           
+            <li class="nav-item px-4">
+              <a href="/register" class="nav-link font-semibold bg-red-500 text-white hover:bg-red-700 
+              py-3 px-4 rounded-md">Registrar</a>
+            </li>
+
             
           {{else}}
             <li class="nav-item px-4">
@@ -38,9 +45,10 @@
             </li>
 
             <li class="nav-item px-4">
-              <a href="/register" class="nav-link font-semibold border-2 border-white hover:bg-white 
+              <a href="/register2" class="nav-link font-semibold border-2 border-white hover:bg-white 
               hover:text-green-700 py-3 px-4 rounded-md">Registrarse</a>
             </li>
+            
           {{/if}} 
         </ul>
     </nav>
